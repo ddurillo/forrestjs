@@ -1,7 +1,7 @@
 class HasuraSQLError extends Error {
   constructor(message, endpoint, secret, source, sql, originalError) {
     super(message);
-    this.name = "HasuraSQLError";
+    this.name = 'HasuraSQLError';
     this.endpoint = endpoint;
     this.secret = secret;
     this.source = source;
@@ -11,11 +11,11 @@ class HasuraSQLError extends Error {
 }
 
 const getSQLErrorMessage = (data) => {
-  if (data.code === "postgres-error") {
+  if (data.code === 'postgres-error') {
     return `${data.error}: ${data.internal.error.message}`;
   }
 
-  return error.message;
+  return `${data.code}: ${data.error}`;
 };
 
 class HasuraSQLPostgresError extends HasuraSQLError {
@@ -26,21 +26,21 @@ class HasuraSQLPostgresError extends HasuraSQLError {
       secret,
       source,
       sql,
-      error
+      error,
     );
-    this.name = "HasuraSQLPostgresError";
+    this.name = 'HasuraSQLPostgresError';
   }
 }
 
 class HasuraSQLRequestError extends HasuraSQLError {
   constructor(error, endpoint, secret, source, sql) {
-    super("Unknown GraphQL response", endpoint, secret, source, sql, error);
-    this.name = "HasuraSQLRequestError";
+    super('Unknown GraphQL response', endpoint, secret, source, sql, error);
+    this.name = 'HasuraSQLRequestError';
   }
 }
 
 module.exports = {
   HasuraSQLError,
   HasuraSQLPostgresError,
-  HasuraSQLRequestError
+  HasuraSQLRequestError,
 };
